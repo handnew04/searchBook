@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EF23E8B92D2CE6BE008D5D25 /* SwiftyBeaver in Frameworks */ = {isa = PBXBuildFile; productRef = EF23E8B82D2CE6BE008D5D25 /* SwiftyBeaver */; };
+		EF529BD22D2E619C00F0DB87 /* CombineMoya in Frameworks */ = {isa = PBXBuildFile; productRef = EF529BD12D2E619C00F0DB87 /* CombineMoya */; };
+		EF5704F92D27D159007AA620 /* Moya in Frameworks */ = {isa = PBXBuildFile; productRef = EF5704F82D27D159007AA620 /* Moya */; };
+		EF5704FB2D27D159007AA620 /* ReactiveMoya in Frameworks */ = {isa = PBXBuildFile; productRef = EF5704FA2D27D159007AA620 /* ReactiveMoya */; };
 		EF7C70132D27C9F90075D40F /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = EF7C70122D27C9F90075D40F /* SnapKit */; };
 /* End PBXBuildFile section */
 
@@ -53,7 +57,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EF5704F92D27D159007AA620 /* Moya in Frameworks */,
 				EF7C70132D27C9F90075D40F /* SnapKit in Frameworks */,
+				EF5704FB2D27D159007AA620 /* ReactiveMoya in Frameworks */,
+				EF529BD22D2E619C00F0DB87 /* CombineMoya in Frameworks */,
+				EF23E8B92D2CE6BE008D5D25 /* SwiftyBeaver in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,6 +106,10 @@
 			name = SearchBook;
 			packageProductDependencies = (
 				EF7C70122D27C9F90075D40F /* SnapKit */,
+				EF5704F82D27D159007AA620 /* Moya */,
+				EF5704FA2D27D159007AA620 /* ReactiveMoya */,
+				EF23E8B82D2CE6BE008D5D25 /* SwiftyBeaver */,
+				EF529BD12D2E619C00F0DB87 /* CombineMoya */,
 			);
 			productName = SearchBook;
 			productReference = EF12F2F32D27C6E000D5F66F /* SearchBook.app */;
@@ -129,6 +141,8 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				EF7C70112D27C9F90075D40F /* XCRemoteSwiftPackageReference "SnapKit" */,
+				EF5704F72D27D159007AA620 /* XCRemoteSwiftPackageReference "Moya" */,
+				EF23E8B72D2CE6BE008D5D25 /* XCRemoteSwiftPackageReference "SwiftyBeaver" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = EF12F2F42D27C6E000D5F66F /* Products */;
@@ -163,12 +177,15 @@
 /* Begin XCBuildConfiguration section */
 		EF12F30A2D27C6E100D5F66F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = EF12F2F52D27C6E000D5F66F /* SearchBook */;
+			baseConfigurationReferenceRelativePath = Key.xcconfig;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 799L969K66;
+				ENABLE_DEBUG_DYLIB = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SearchBook/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -184,19 +201,22 @@
 				PRODUCT_BUNDLE_IDENTIFIER = handnew.SearchBook;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
 		EF12F30B2D27C6E100D5F66F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = EF12F2F52D27C6E000D5F66F /* SearchBook */;
+			baseConfigurationReferenceRelativePath = Key.xcconfig;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 799L969K66;
+				ENABLE_DEBUG_DYLIB = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SearchBook/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -212,7 +232,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = handnew.SearchBook;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -254,7 +274,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -317,7 +337,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -360,6 +380,22 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		EF23E8B72D2CE6BE008D5D25 /* XCRemoteSwiftPackageReference "SwiftyBeaver" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwiftyBeaver/SwiftyBeaver.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.1.1;
+			};
+		};
+		EF5704F72D27D159007AA620 /* XCRemoteSwiftPackageReference "Moya" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Moya/Moya.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 15.0.3;
+			};
+		};
 		EF7C70112D27C9F90075D40F /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
@@ -371,6 +407,26 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		EF23E8B82D2CE6BE008D5D25 /* SwiftyBeaver */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EF23E8B72D2CE6BE008D5D25 /* XCRemoteSwiftPackageReference "SwiftyBeaver" */;
+			productName = SwiftyBeaver;
+		};
+		EF529BD12D2E619C00F0DB87 /* CombineMoya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EF5704F72D27D159007AA620 /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = CombineMoya;
+		};
+		EF5704F82D27D159007AA620 /* Moya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EF5704F72D27D159007AA620 /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = Moya;
+		};
+		EF5704FA2D27D159007AA620 /* ReactiveMoya */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EF5704F72D27D159007AA620 /* XCRemoteSwiftPackageReference "Moya" */;
+			productName = ReactiveMoya;
+		};
 		EF7C70122D27C9F90075D40F /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = EF7C70112D27C9F90075D40F /* XCRemoteSwiftPackageReference "SnapKit" */;

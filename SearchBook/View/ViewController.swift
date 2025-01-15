@@ -9,6 +9,8 @@ import UIKit
 import SnapKit
 
 class ViewController: UIViewController {
+  private let viewModel = MainViewModel()
+
   private let text: UITextField = {
     let tf = UITextField()
     tf.placeholder = "zmzmzm"
@@ -21,6 +23,7 @@ class ViewController: UIViewController {
     view.backgroundColor = .white
 
     setupUI()
+    viewModel.requestBookList(page: 1)
   }
 
   private func setupUI() {
