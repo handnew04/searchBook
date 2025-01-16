@@ -17,4 +17,5 @@ struct Book: ModelType {
   let title: String
   let translators: [String]
   let url: String
+  var isBookmarked = false
 }

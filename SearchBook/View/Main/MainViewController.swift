@@ -87,6 +87,13 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
     let width = collectionView.bounds.width
     return CGSize(width: width, height: 80)
   }
+
+  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    let selectedBook = viewModel.books[indexPath.item]
+    let detailVC = DetailViewController(book: selectedBook)
+
+    navigationController?.pushViewController(detailVC, animated: true)
+  }
 }
 
 extension MainViewController: UISearchBarDelegate {

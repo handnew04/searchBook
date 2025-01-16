@@ -18,14 +18,14 @@ class BookListCell: UICollectionViewCell {
 
   let titleLabel: UILabel = {
     let lv = UILabel()
-    lv.font = .systemFont(ofSize: 14, weight: UIFont.Weight(rawValue: 600))
+    lv.font = .systemFont(ofSize: 14, weight: .semibold)
     lv.textColor = .black
     return lv
   }()
 
   let authorLabel: UILabel = {
     let lv = UILabel()
-    lv.font = .systemFont(ofSize: 11, weight: UIFont.Weight(rawValue: 400))
+    lv.font = .systemFont(ofSize: 11, weight: .medium)
     lv.textColor = .gray
     return lv
   }()

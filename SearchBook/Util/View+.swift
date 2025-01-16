@@ -14,3 +14,19 @@ extension UIImageView {
     }
   }
 }
+
+extension UILabel {
+  func lineSpacing(spacing: CGFloat) {
+    guard let text = self.text else { return }
+
+    let attributedString = NSMutableAttributedString(string: text)
+    let paragraphStyle = NSMutableParagraphStyle()
+    paragraphStyle.lineSpacing = spacing
+
+    attributedString.addAttribute(.paragraphStyle,
+                                  value: paragraphStyle,
+                                  range: NSRange(location: 0, length: attributedString.length))
+
+    self.attributedText = attributedString
+  }
+}
