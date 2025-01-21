@@ -10,6 +10,8 @@ import Combine
 import Moya
 import CombineMoya
 
+typealias ResponsePublisher<T: ModelType> = AnyPublisher<T, Error>
+
 final class NetworkManager<Target: TargetType>: MoyaProvider<Target> {
   let retryCount = 2
   var count = 0

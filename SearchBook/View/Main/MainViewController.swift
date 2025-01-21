@@ -27,6 +27,8 @@ class MainViewController: UIViewController {
   private let searchBar: UISearchBar = {
     let sb = UISearchBar()
     sb.placeholder = "검색어를 입력하세요"
+    sb.backgroundColor = .clear
+    sb.backgroundImage = UIImage()
     return sb
   }()
 
@@ -38,7 +40,6 @@ class MainViewController: UIViewController {
     collectionView.dataSource = self
     searchBar.delegate = self
 
-    viewModel.requestBookList(page: 1)
     setupUI()
     setupBindings()
   }
@@ -54,7 +55,7 @@ class MainViewController: UIViewController {
     }
 
     collectionView.snp.makeConstraints { make in
-      make.top.equalTo(searchBar.snp.bottom)
+      make.top.equalTo(searchBar.snp.bottom).offset(10)
       make.leading.trailing.bottom.equalToSuperview().inset(16)
     }
 
@@ -92,11 +93,14 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
     let selectedBook = viewModel.books[indexPath.item]
     let detailVC = DetailViewController(book: selectedBook)
 
+    detailVC.hidesBottomBarWhenPushed = true
     navigationController?.pushViewController(detailVC, animated: true)
   }
 }
 
 extension MainViewController: UISearchBarDelegate {
-
+  func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+    viewModel.searchBook(searchText)
+  }
 }
 
