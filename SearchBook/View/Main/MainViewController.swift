@@ -50,7 +50,7 @@ class MainViewController: UIViewController {
 
     searchBar.snp.makeConstraints { make in
       make.top.equalTo(view.safeAreaLayoutGuide)
-      make.leading.trailing.equalToSuperview()
+      make.leading.trailing.equalToSuperview().inset(8)
       make.height.equalTo(44)
     }
 
@@ -68,6 +68,15 @@ class MainViewController: UIViewController {
         self?.collectionView.reloadData()
       }
       .store(in: &cancellables)
+
+    viewModel.$insertIndexPaths
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] indexPath in
+        self?.collectionView.performBatchUpdates({
+          self?.collectionView.insertItems(at: indexPath ?? [])
+        })
+      }
+      .store(in: &cancellables)
   }
 }
 
@@ -75,8 +84,12 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
     return viewModel.books.count
   }
-  
+
   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    guard indexPath.item < viewModel.books.count else {
+      return UICollectionViewCell()
+    }
+
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "BookCell", for: indexPath) as! BookListCell
 
     let item = viewModel.books[indexPath.item]
@@ -95,6 +108,15 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
 
     detailVC.hidesBottomBarWhenPushed = true
     navigationController?.pushViewController(detailVC, animated: true)
+  }
+
+  func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    let offsetY = scrollView.contentOffset.y
+    let contentHeight = scrollView.contentSize.height
+
+    if offsetY > contentHeight - scrollView.frame.height {
+      viewModel.requestNextPage()
+    }
   }
 }
 
