@@ -9,6 +9,10 @@ import UIKit
 import SnapKit
 
 class BookListCell: UICollectionViewCell {
+  var bookmarkTapped: ((String) -> Void)?
+  var isBookmarked = false
+  var isbn = String()
+
   let coverImage: UIImageView = {
     let iv = UIImageView()
     iv.contentMode = .scaleToFill
@@ -82,11 +86,18 @@ class BookListCell: UICollectionViewCell {
 
     titleStackView.setContentHuggingPriority(.defaultLow, for: .horizontal)
     titleStackView.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapBookmark))
+    bookmarkIcon.addGestureRecognizer(tapGesture)
+    bookmarkIcon.isUserInteractionEnabled = true
   }
 
   func configure(_ book: Book) {
     titleLabel.text = book.title
     authorLabel.text = book.authors.joined(separator: ", ")
+    isBookmarked = book.isBookmarked
+    isbn = book.isbn
+    updateBookmarkIcon()
 
     Task {
       do {
@@ -97,5 +108,15 @@ class BookListCell: UICollectionViewCell {
         log.debug(NetworkError.failedImageDownload.description + "\(error)")
       }
     }
+  }
+
+  @objc private func didTapBookmark() {
+    isBookmarked.toggle()
+    updateBookmarkIcon()
+    bookmarkTapped?(self.isbn)
+  }
+
+  private func updateBookmarkIcon() {
+    bookmarkIcon.image = isBookmarked ? UIImage(systemName: "heart.fill") : UIImage(systemName: "heart")
   }
 }

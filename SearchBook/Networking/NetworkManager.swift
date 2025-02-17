@@ -63,6 +63,6 @@ final class NetworkManager<Target: TargetType>: MoyaProvider<Target> {
   }
 
   private func handleNetworkError(_ error: Error) {
-    guard let moyaError = error as? MoyaError, case let .statusCode(response) = moyaError else { return }
+    guard let moyaError = error as? MoyaError, case .statusCode = moyaError else { return }
   }
 }

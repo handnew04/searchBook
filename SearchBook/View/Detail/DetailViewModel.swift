@@ -6,10 +6,19 @@
 //
 
 final class DetailViewModel {
-  //bookmark
+  private let coredataManager = CoreDataManager.shared
+
   var book: Book
 
   init(book: Book) {
     self.book = book
+  }
+
+  func addBookmark() {
+    coredataManager.insertBookmark(from: book)
+  }
+
+  func deleteBookmark() {
+    coredataManager.deleteBookmark(for: book)
   }
 }

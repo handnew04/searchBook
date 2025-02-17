@@ -12,6 +12,7 @@ import Combine
 class MainViewController: UIViewController {
   private let viewModel = MainViewModel()
   private var cancellables = Set<AnyCancellable>()
+  private var isNewSearch = true
 
   private let collectionView: UICollectionView = {
     let layout = UICollectionViewFlowLayout()
@@ -44,6 +45,11 @@ class MainViewController: UIViewController {
     setupBindings()
   }
 
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    viewModel.fetchBookmarks()
+  }
+
   private func setupUI() {
     view.addSubview(searchBar)
     view.addSubview(collectionView)
@@ -63,18 +69,18 @@ class MainViewController: UIViewController {
 
   private func setupBindings() {
     viewModel.$books
-      .debounce(for: .milliseconds(500), scheduler: DispatchQueue.main)
       .sink { [weak self] _ in
-        self?.collectionView.reloadData()
+        guard let self, isNewSearch else { return }
+        self.collectionView.reloadData()
       }
       .store(in: &cancellables)
 
     viewModel.$insertIndexPaths
       .receive(on: DispatchQueue.main)
       .sink { [weak self] indexPath in
-        self?.collectionView.performBatchUpdates({
+        self?.collectionView.performBatchUpdates {
           self?.collectionView.insertItems(at: indexPath ?? [])
-        })
+        } 
       }
       .store(in: &cancellables)
   }
@@ -94,6 +100,13 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
 
     let item = viewModel.books[indexPath.item]
     cell.configure(item)
+    cell.bookmarkTapped = { [weak self] isbn in
+      if item.isBookmarked {
+        self?.viewModel.deleteBookmark(isbn: isbn)
+      } else {
+        self?.viewModel.addBookmark(isbn: isbn)
+      }
+    }
     return cell
   }
 
@@ -115,6 +128,7 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
     let contentHeight = scrollView.contentSize.height
 
     if offsetY > contentHeight - scrollView.frame.height {
+      isNewSearch = false
       viewModel.requestNextPage()
     }
   }
@@ -122,6 +136,7 @@ extension MainViewController: UICollectionViewDataSource, UICollectionViewDelega
 
 extension MainViewController: UISearchBarDelegate {
   func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+    isNewSearch = true
     viewModel.searchBook(searchText)
   }
 }

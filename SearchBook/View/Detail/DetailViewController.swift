@@ -102,6 +102,10 @@ class DetailViewController: UIViewController {
       make.leading.trailing.equalToSuperview().inset(16)
       make.top.equalTo(coverImageView.snp.bottom).offset(30)
     }
+
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tappedBookmark))
+    bookmarkIcon.addGestureRecognizer(tapGesture)
+    bookmarkIcon.isUserInteractionEnabled = true
   }
 
   private func configure() {
@@ -112,11 +116,26 @@ class DetailViewController: UIViewController {
     publisherLabel.text = book.publisher + " 펴냄"
     descriptionLabel.text = book.contents
     descriptionLabel.lineSpacing(spacing: 10)
-    bookmarkIcon.image = book.isBookmarked ? UIImage(systemName: "heart.fill") : UIImage(systemName: "heart")
+    updateBookmarkIcon()
 
     guard let url = URL(string: book.thumbnail) else { return }
     Task {
       try? await coverImageView.load(from: url)
     }
+  }
+
+  @objc private func tappedBookmark() {
+    if viewModel.book.isBookmarked {
+      viewModel.deleteBookmark()
+    } else {
+      viewModel.addBookmark()
+    }
+
+    viewModel.book.isBookmarked.toggle()
+    updateBookmarkIcon()
+  }
+
+  private func updateBookmarkIcon() {
+    bookmarkIcon.image = viewModel.book.isBookmarked ? UIImage(systemName: "heart.fill") : UIImage(systemName: "heart")
   }
 }

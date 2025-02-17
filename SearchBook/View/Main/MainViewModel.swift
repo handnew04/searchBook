@@ -8,6 +8,7 @@ import Foundation
 import Combine
 
 final class MainViewModel {
+  private let coreDataManager: CoreDataManager = CoreDataManager.shared
   private let bookService: BookServiceType = BookService()
   private let size = 20
 
@@ -17,7 +18,7 @@ final class MainViewModel {
 
   private var cancellables: Set<AnyCancellable> = []
   private var page = 1
-  private var isLoading: Bool = false
+  private var isLoading = false
   private var isEndPage = false
 
   init() {
@@ -27,6 +28,11 @@ final class MainViewModel {
   private func setupSearchBinding() {
     $searchQuery
       .debounce(for: .milliseconds(300), scheduler: DispatchQueue.main)
+      .handleEvents(receiveOutput: { query in
+        if query.isEmpty {
+          self.books = []
+        }
+      })
       .filter { !$0.isEmpty }
       .filter { $0.count >= 2 }
       .sink { query in
@@ -46,9 +52,9 @@ final class MainViewModel {
         self.isLoading = false
         log.debug("REQEUST BOOK COMPLETE HERE!! :::::::")
       }) { response in
-        response.documents.forEach { doc in
-          self.books.append(doc.toDomain())
-        }
+        let newBooks = response.documents.map { $0.toDomain() }
+        let checkedBooks = self.coreDataManager.fetchBookmarks(for: newBooks)
+        self.books = checkedBooks
         self.page += 1
         self.isEndPage = response.meta.isEnd
       }
@@ -70,12 +76,14 @@ final class MainViewModel {
           IndexPath(item: $0, section: 0)
         }
 
-        let appendBooks = response.documents.map { $0.toDomain()
-        }
+        let appendBooks = response.documents.map { $0.toDomain() }
+
 
         guard !appendBooks.isEmpty else { return }
 
-        self.books.append(contentsOf: appendBooks)
+        let checkedBooks = self.coreDataManager.fetchBookmarks(for: appendBooks)
+
+        self.books += checkedBooks
         self.insertIndexPaths = indextPath
         self.page += 1
         self.isEndPage = response.meta.isEnd
@@ -84,10 +92,29 @@ final class MainViewModel {
   }
 
   func searchBook(_ query: String) {
-    books = []
     page = 1
     searchQuery = query
     isEndPage = false
   }
 
+  func addBookmark(isbn: String) {
+    guard let idx = books.firstIndex(where: { $0.isbn == isbn }) else { return }
+
+    log.debug("Add Bookmark : \(books[idx])")
+    books[idx].isBookmarked = true
+    coreDataManager.insertBookmark(from: books[idx])
+  }
+
+  func deleteBookmark(isbn: String) {
+    guard let idx = books.firstIndex(where: { $0.isbn == isbn }) else { return }
+
+    log.debug("Delete Bookmark : \(books[idx])")
+    books[idx].isBookmarked = false
+    coreDataManager.deleteBookmark(for: books[idx])
+  }
+
+  func fetchBookmarks() {
+    guard !books.isEmpty else { return }
+    books = coreDataManager.fetchBookmarks(for: books)
+  }
 }
