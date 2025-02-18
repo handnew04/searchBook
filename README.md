@@ -2,7 +2,7 @@
 
 ## Task stack & Open-source libraries
 - iOS 16.4+
-- Swift 5.7
+- Swift 5
 - Xcode 14
 - Swift based, Combine, UIKit
 - MVVM Architecture (View - ViewModel - Model)
